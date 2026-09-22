@@ -9,7 +9,7 @@ import MemoModal from "../components/MemoModal";
 import Select from "../components/Select";
 import { TAG_OPTIONS } from "../constants/tags";
 
-function MainPage() {
+export default function MainPage() {
   const [memos, setMemos] = useState<Memo[]>(mockMemos);
   const [keyword, setKeyword] = useState("");
   const [debouncedKeyword, setDebouncedKeyword] = useState("");
@@ -115,5 +115,3 @@ function MainPage() {
     </div>
   );
 }
-
-export default MainPage;
