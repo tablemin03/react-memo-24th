@@ -84,8 +84,8 @@ export default function LoginPage() {
             aria-describedby={
               errors.password ? "login-password-error" : undefined
             }
-            {...register("password", { required: "비밀번호를 입력해주세요." })}
             {...register("password", {
+              required: "비밀번호를 입력해주세요.",
               minLength: {
                 value: 8,
                 message: "비밀번호는 8자 이상 입력해주세요.",
