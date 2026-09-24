@@ -105,10 +105,10 @@ export default function MemoModal({ memo, onClose }: MemoModalProps) {
           {memo.content || "내용이 없는 메모입니다."}
         </div>
         <div className="flex justify-end gap-3">
-          <button className="flex cursor-pointer">
+          <button className="flex cursor-pointer" type="button">
             <EditIcon size={32} />
           </button>
-          <button className="flex cursor-pointer">
+          <button className="flex cursor-pointer" type="button">
             <TrashIcon size={32} />
           </button>
         </div>
