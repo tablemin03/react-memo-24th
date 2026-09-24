@@ -39,7 +39,7 @@ export default function LoginPage() {
 
       navigate("/", { replace: true });
     } catch {
-      setSubmitMessage("로그인에 실패했습니다. 다시 시도해주세요.");
+      setSubmitMessage("아이디 또는 비밀번호가 옳지 않습니다.");
     }
   };
 
