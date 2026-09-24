@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthStore } from "../stores/useAuthStore";
+import { postLogin } from "../apis/auth";
 
 type LoginFormValues = {
   email: string;
@@ -18,8 +20,27 @@ export default function LoginPage() {
     mode: "onChange",
   });
 
-  const onSubmit = () => {
-    setSubmitMessage("로그인 서비스가 아직 연결되지 않았습니다.");
+  const navigate = useNavigate();
+  const setAccessToken = useAuthStore((state) => state.setAccessToken);
+
+  const onSubmit = async (values: LoginFormValues) => {
+    setSubmitMessage("");
+
+    try {
+      const response = await postLogin(values);
+
+      if (!response.success || !response.data?.accessToken) {
+        setSubmitMessage(response.message || "로그인에 실패했습니다.");
+
+        return;
+      }
+
+      setAccessToken(response.data.accessToken);
+
+      navigate("/", { replace: true });
+    } catch {
+      setSubmitMessage("로그인에 실패했습니다. 다시 시도해주세요.");
+    }
   };
 
   return (
@@ -66,8 +87,8 @@ export default function LoginPage() {
             {...register("password", { required: "비밀번호를 입력해주세요." })}
             {...register("password", {
               minLength: {
-                value: 4,
-                message: "비밀번호는 4자 이상 입력해주세요.",
+                value: 8,
+                message: "비밀번호는 8자 이상 입력해주세요.",
               },
             })}
             placeholder="비밀번호를 입력하세요"
