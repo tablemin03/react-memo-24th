@@ -1,21 +1,59 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import PlusIcon from "../components/icons/PlusIcon";
 import SearchIcon from "../components/icons/SearchIcon";
 import PeopleIcon from "../components/icons/PeopleIcon";
-import mockMemos from "../data/mockData";
 import type { Memo, MemoTag } from "../types/memos";
 import MemoLists from "../components/MemoLists";
+import MemoListSkeleton from "../components/skeletons/MemoListSkeleton";
 import MemoModal from "../components/MemoModal";
 import Select from "../components/Select";
 import { TAG_OPTIONS } from "../constants/tags";
+import { useInfiniteMemos } from "../hooks/queries/useInfiniteMemos";
 
 export default function MainPage() {
-  const [memos, setMemos] = useState<Memo[]>(mockMemos);
+  const {
+    memos,
+    totalElements,
+    fetchNextPage,
+    hasNextPage,
+    isPending,
+    isFetching,
+    isFetchingNextPage,
+    isError,
+  } = useInfiniteMemos();
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+
+  const [pinnedOverrides, setPinnedOverrides] = useState<
+    Record<number, boolean>
+  >({});
+
   const [keyword, setKeyword] = useState("");
   const [debouncedKeyword, setDebouncedKeyword] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<MemoTag | "">("");
   const [selectedMemoId, setSelectedMemoId] = useState<Memo["id"] | null>(null);
-  const selectedMemo = memos.find((memo) => memo.id === selectedMemoId);
+
+  const displayedMemos = memos.map((memo) => ({
+    ...memo,
+    isPinned: pinnedOverrides[memo.id] ?? memo.isPinned,
+  }));
+  const selectedMemo = displayedMemos.find(
+    (memo) => memo.id === selectedMemoId,
+  );
+
+  useEffect(() => {
+    const target = loadMoreRef.current;
+    if (!target || !hasNextPage || isFetching || isError) return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        void fetchNextPage({ cancelRefetch: false });
+      }
+    });
+
+    observer.observe(target);
+
+    return () => observer.disconnect();
+  }, [fetchNextPage, hasNextPage, isFetching, isError]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -28,15 +66,18 @@ export default function MainPage() {
   const query = debouncedKeyword.trim().toLowerCase();
 
   const togglePinned = (id: Memo["id"]) => {
-    setMemos((previousMemos) =>
-      previousMemos.map((memo) =>
-        memo.id === id ? { ...memo, isPinned: !memo.isPinned } : memo,
-      ),
-    );
+    const memo = memos.find((memo) => memo.id === id);
+    if (!memo) return;
+
+    setPinnedOverrides((previous) => ({
+      ...previous,
+      [id]: !(previous[id] ?? memo.isPinned),
+    }));
   };
 
-  const filteredMemos = memos.filter((memo) => {
-    const matchesCategory = selectedCategory === "" || memo.category === selectedCategory;
+  const filteredMemos = displayedMemos.filter((memo) => {
+    const matchesCategory =
+      selectedCategory === "" || memo.category === selectedCategory;
 
     const matchesKeyword =
       memo.title.toLowerCase().includes(query) ||
@@ -64,7 +105,7 @@ export default function MainPage() {
                     value === "" ||
                     value === "WORK" ||
                     value === "DAILY" ||
-                    value === "OTHERS"
+                    value === "OTHER"
                   ) {
                     setSelectedCategory(value);
                   }
@@ -100,12 +141,25 @@ export default function MainPage() {
         </button>
       </div>
 
-      <MemoLists
-        memos={filteredMemos}
-        totalCount={memos.length}
-        onTogglePinned={togglePinned}
-        onSelectMemo={setSelectedMemoId}
+      {isPending ? (
+        <MemoListSkeleton />
+      ) : (
+        (!isError || memos.length > 0) && (
+          <MemoLists
+            memos={filteredMemos}
+            totalCount={totalElements}
+            onTogglePinned={togglePinned}
+            onSelectMemo={setSelectedMemoId}
+          />
+        )
+      )}
+      {isFetchingNextPage && <MemoListSkeleton className="mt-4" />}
+      <div
+        ref={loadMoreRef}
+        aria-hidden="true"
+        className="h-px w-full shrink-0"
       />
+
       {selectedMemo && (
         <MemoModal
           memo={selectedMemo}
