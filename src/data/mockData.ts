@@ -58,7 +58,7 @@ const mockMemos: Memo[] = [
   {
     id: 6,
     title: "만들어 보고 싶은 서비스",
-    category: "OTHERS",
+    category: "OTHER",
     date: "2026-09-03",
     isPinned: false,
     createdAt: "2026-09-03T00:00:00.000Z",
@@ -69,7 +69,7 @@ const mockMemos: Memo[] = [
   {
     id: 7,
     title: "나중에 찾아볼 개념",
-    category: "OTHERS",
+    category: "OTHER",
     date: "2026-09-02",
     isPinned: false,
     createdAt: "2026-09-02T00:00:00.000Z",
@@ -80,7 +80,7 @@ const mockMemos: Memo[] = [
   {
     id: 8,
     title: "짧은 메모",
-    category: "OTHERS",
+    category: "OTHER",
     date: "2026-09-01",
     isPinned: false,
     createdAt: "2026-09-01T00:00:00.000Z",
@@ -145,7 +145,7 @@ const mockMemos: Memo[] = [
   {
     id: 14,
     title: "언젠가 가 보고 싶은 작은 책방",
-    category: "OTHERS",
+    category: "OTHER",
     date: "2026-09-03",
     isPinned: false,
     createdAt: "2026-09-03T00:00:00.000Z",
@@ -156,7 +156,7 @@ const mockMemos: Memo[] = [
   {
     id: 15,
     title: "메모장에 나중에 추가하고 싶은 기능들",
-    category: "OTHERS",
+    category: "OTHER",
     date: "2026-09-02",
     isPinned: false,
     createdAt: "2026-09-02T00:00:00.000Z",
@@ -167,7 +167,7 @@ const mockMemos: Memo[] = [
   {
     id: 16,
     title: "메모장에 나중에 추가하고 싶은 기능들",
-    category: "OTHERS",
+    category: "OTHER",
     date: "2026-09-17",
     isPinned: false,
     createdAt: "2026-09-17T00:00:00.000Z",

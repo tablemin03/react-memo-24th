@@ -1,6 +1,6 @@
 import type { BaseResponse } from "./response";
 
-export type MemoTag = "WORK" | "DAILY" | "OTHERS";
+export type MemoTag = "WORK" | "DAILY" | "OTHER";
 
 export interface Memo {
   id: number;
@@ -20,6 +20,11 @@ export interface MemoResult {
   totalElements: number;
   totalPages: number;
   last: boolean;
+}
+
+export interface GetMemosParams {
+  page?: number;
+  size?: number;
 }
 
 export type MemoResponse = BaseResponse<MemoResult>;
