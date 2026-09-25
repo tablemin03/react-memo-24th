@@ -1,74 +1,76 @@
-# 2주차 과제: React Memo
-
-<br>
-
-# 서론
-
-안녕하세요 🙌🏻 24기 프론트엔드 운영진 **구민교**입니다.
-
-다들 1주차 미션인 Vanilla Memo를 만드시느라 수고 많으셨습니다! 1주차 미션을 통해 Vanilla JS로 메모 서비스를 구현하면서 React를 사용하지 않을 때의 불편함을 어느 정도 느껴보셨을 것이라 생각합니다.
-
-그리하여 이번 미션은, 1주차 스터디 미션으로 주어진 Memo 서비스를 **React**로 리팩토링하는 것입니다❗️
-
-기존에 React를 어느 정도 사용해보신 분들께는 더 효율적인 컴포넌트 구조와 디자인 패턴을 고민해보는 주차가 될 것이고, 아직 React를 깊게 접해보지 못한 분들께는 기존 애플리케이션을 React로 포팅하는 과정을 통해 왜 React가 등장하게 되었는지, 그리고 컴포넌트 기반 개발 방식이 Vanilla JS와 어떤 차이가 있는지 체감해보는 주차가 될 것이라 생각합니다.
-
-이번 미션에서는 단순히 화면을 그대로 옮기는 것에 그치지 않고, **어떤 기준으로 컴포넌트를 나누고 어떻게 재사용할 수 있을지** 충분히 고민해보시기 바랍니다. 같은 화면이라도 다양한 컴포넌트 구조가 나올 수 있는 만큼, 본인이 생각하기에 가장 효율적인 방식으로 구현해보시면 좋겠습니다.
-
-또한 이번 과제에서는 React 프로젝트 생성 시 **Vite 사용이 필수입니다.** 과제를 진행하면서 Vite를 활용한 프로젝트 환경 세팅과 함께 React의 기본적인 프로젝트 구조에도 자연스럽게 익숙해져 보세요.
-
-과제를 진행하다가 막히는 부분이 있더라도, 우선은 스스로 공부하고 찾아보며 해결해보는 과정을 권장드립니다. 다만 미션과 관련해 운영진의 도움이 필요하다면, 언제든 프론트엔드 카카오톡방에 질문 남겨주세요!
-
-<br>
+# React Memo
 
 
-# 과제
+## 1. 기술 스택
 
-## 🎯 목표
+| 구분 | 기술 |
+| --- | --- |
+| UI | React 19, TypeScript 6 |
+| 개발·빌드 | Vite 8 |
+| 스타일 | Tailwind CSS 4, Pretendard |
+| 라우팅 | React Router 7 |
+| 서버 상태 관리 | TanStack Query 5 |
+| 인증 상태 관리 | Zustand 5 |
+| 폼 관리 | React Hook Form 7 |
+| HTTP 통신 | Axios 1 |
+| 코드 검사 | ESLint 10 |
+| 패키지 관리 | pnpm |
 
-- React의 기초를 이해합니다.
-- React를 통한 어플리케이션 상태 관리 방법을 이해합니다.
-- React Hooks에 대한 기초를 이해합니다.
-- React의 컴포넌트 기반 개발 방식을 이해하고, UI를 적절한 단위로 분리하여 구현합니다.
-- Vite를 통한 React 프로젝트 개발환경 구축을 익힙니다.
-- Tailwind CSS를 활용한 유틸리티 클래스 기반 스타일링 방식을 익힙니다.
+## 2. 주요 기능
 
-## 📅 기한
+- **회원가입·로그인**: 이메일과 비밀번호를 이용한 인증
+- **메모 목록 조회**: 카테고리별 카드와 즐겨찾기·일반 메모 구분
+- **검색·필터**: 불러온 메모의 제목·내용 검색 및 카테고리 필터
+- **상세 보기**: 메모의 전체 내용을 모달로 확인
 
-- 2026년 9월 16일 수요일 14:00까지
+## 3. 지금까지 구현한 기능
 
-## 💬 Review Questions
+현재 구현 범위는 다음과 같습니다.
+- 이메일 형식, 비밀번호 8자 이상, 비밀번호 확인 검증 후 회원가입 요청
+- 로그인 성공 시 액세스 토큰 저장 및 메인 페이지 이동
+- 토큰이 없으면 로그인 페이지로 이동, Axios 요청에 Bearer 토큰 추가
+- 검색·필터는 **현재까지 불러온 메모**에 적용됩니다.
+- 즐겨찾기 변경은 화면의 로컬 상태에만 반영되며 서버에 저장되지 않습니다.
+- 토큰을 영속 저장하지 않으므로 새로고침하면 다시 로그인해야 합니다.
+- 메모 생성·수정·삭제, 마이페이지, 아이디·비밀번호 찾기는 버튼 UI만 있습니다.
+- 서버 전체 검색·필터, 토큰 갱신, 메모 목록 오류 안내·재시도 UI는 아직 구현하지 않았습니다.
 
-- Virtual DOM은 무엇이고, 이를 사용함으로써 얻는 이점은 무엇인가요?
-- React에서 컴포넌트를 분리하는 기준은 무엇이며, 컴포넌트 분리를 통해 얻을 수 있는 이점은 무엇인가요?
-- React 컴포넌트의 생명주기에 대해서 설명해주세요.
+## 4. 파일 구조
 
-## 💡 필수 요건
-
-- 1주차에 Vanilla JS로 구현했던 Memo 서비스를 React로 전환합니다.
-- 피그마에 제공된 UI를 기준으로 필요한 컴포넌트를 모두 구현합니다.
-- Tailwind CSS를 사용합니다.
-- React Hooks만을 사용하여 상태를 관리합니다. (전역 상태관리 라이브러리 사용 XX)
-- Vite를 활용하여 React 프로젝트 환경 구축을 진행합니다.
-
-## ✅ 선택 요건
-
-- 기존 Memo 서비스에 여러분들이 추가하고 싶은 기능과 디자인을 자유롭게 추가해보세요.
-- TypeScript를 활용하여 프로젝트를 진행해보세요.
-- 시간이 된다면 다음 주차에 이어서 구현할 메모 작성 완료 부분의 UI를 미리 구현해보세요! 미리 구현해두면 여러분의 추석 연휴를 지킬 수 있습니다 🍂
-
-<br>
-
-
-# 링크 및 참고자료
-
-- [React Docs 주요 개념](https://react.dev/learn)
-- [React Docs Hooks](https://react.dev/reference/react)
-- [React useEffect 완벽 가이드](https://overreacted.io/ko/a-complete-guide-to-useeffect/)
-- [컴포넌트 네이밍을 위한 자바스크립트 네이밍 컨벤션](https://velog.io/@cada/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EC%8A%A4%ED%83%80%EC%9D%BC-%EA%B0%80%EC%9D%B4%EB%93%9C-%EB%84%A4%EC%9D%B4%EB%B0%8D-%EC%BB%A8%EB%B2%A4%EC%85%98-%ED%8E%B8)
-- [useState, useEffect Hooks](https://velog.io/@velopert/react-hooks#1-usestate)
-- [Tailwind CSS 공식 문서](https://tailwindcss.com/docs/installation/using-vite)
-- [VSCode Prettier 설정](https://velog.io/@gangk_99/VS-Code-Prettier-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0)
-- [Create React App (CRA) 지원 종료 공식 문서](https://react.dev/blog/2025/02/14/sunsetting-create-react-app)
-- [Create React App 지원 종료 관련 OKKY 커뮤니티 게시글](https://okky.kr/articles/1527414)
-- [CRA 대신 Vite로 React 프로젝트 시작하기](https://www.daleseo.com/vite-react/)
-- [Vite 실무 적용기 - 설명 + 프로젝트 설정](https://blog.hectodata.co.kr/bonjour-vite/)
+```text
+src/
+├── apis/
+│   ├── auth.ts                 # 회원가입·로그인 API
+│   ├── axios.ts                # 공통 Axios 인스턴스와 인증 헤더
+│   └── memos.ts                # 메모 목록 API
+├── assets/fonts/               # Pretendard 폰트
+├── components/
+│   ├── icons/                  # SVG 아이콘
+│   ├── skeletons/
+│   │   └── MemoListSkeleton.tsx # 메모 로딩 스켈레톤
+│   ├── MemoLists.tsx           # 메모 카드 목록과 빈 상태
+│   ├── MemoModal.tsx           # 메모 상세 모달
+│   └── Select.tsx              # 카테고리 선택 UI
+├── constants/
+│   └── tags.ts                 # 카테고리 표시명·색상·선택 옵션
+├── data/
+│   └── mockData.ts             # 개발용 데이터, 현재 메인 화면에는 미사용
+├── hooks/queries/
+│   └── useInfiniteMemos.ts     # 무한 스크롤 조회·캐시 관리
+├── pages/
+│   ├── LoginPage.tsx
+│   ├── SignupPage.tsx
+│   └── MainPage.tsx
+├── routes/
+│   ├── PublicRoute.tsx         # 페이지 경로 설정
+│   └── ProtectedRoute.tsx      # 인증 여부에 따른 접근 제어
+├── stores/
+│   └── useAuthStore.ts         # 액세스 토큰 상태
+├── types/
+│   ├── auth.ts                 # 인증 요청·응답 타입
+│   ├── memos.ts                # 메모·페이지 응답 타입
+│   └── response.ts             # 공통 API 응답 타입
+├── App.tsx                     # 쿼리·라우터 Provider
+├── main.tsx                    # 앱 진입점
+└── index.css                   # 색상·타이포그래피 테마
+```
