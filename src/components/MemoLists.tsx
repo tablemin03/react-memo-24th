@@ -1,5 +1,5 @@
 import type { Memo } from "../types/memos";
-import { MEMO_COLORS } from "../constants/tags";
+import { MEMO_COLORS, TAG_LABELS } from "../constants/tags";
 import PlusIcon from "./icons/PlusIcon";
 import SearchIcon from "./icons/SearchIcon";
 import StarIcon from "./icons/StarIcon";
@@ -8,7 +8,7 @@ type MemoListsProps = {
   memos: Memo[];
   totalCount: number;
   onCreateMemo?: () => void;
-  onToggleFavorite: (id: Memo["id"]) => void;
+  onTogglePinned: (id: Memo["id"]) => void;
   onSelectMemo: (id: Memo["id"]) => void;
 };
 
@@ -16,19 +16,19 @@ const MemoLists = ({
   memos,
   totalCount,
   onCreateMemo,
-  onToggleFavorite,
+  onTogglePinned,
   onSelectMemo,
 }: MemoListsProps) => {
   const groups = [
     {
-      id: "favorite-memo-list",
+      id: "pinned-memo-list",
       label: "즐겨찾기 메모",
-      memos: memos.filter((memo) => memo.isFavorite),
+      memos: memos.filter((memo) => memo.isPinned),
     },
     {
       id: "memo-list",
       label: "일반 메모",
-      memos: memos.filter((memo) => !memo.isFavorite),
+      memos: memos.filter((memo) => !memo.isPinned),
     },
   ];
   return (
@@ -81,7 +81,7 @@ const MemoLists = ({
                 {group.memos.map((memo) => (
                   <li key={memo.id} className="w-[285px] max-w-full shrink-0">
                     <article
-                      className={`relative flex flex-col w-full h-[285px] rounded-2xl text-white00 py-8 px-5 ${MEMO_COLORS[memo.tag]}`}
+                      className={`relative flex flex-col w-full h-[285px] rounded-2xl text-white00 py-8 px-5 ${MEMO_COLORS[memo.category]}`}
                     >
                       <button
                         type="button"
@@ -98,12 +98,12 @@ const MemoLists = ({
                             type="button"
                             className="relative z-10 shrink-0 cursor-pointer"
                             aria-label={`${memo.title} 즐겨찾기`}
-                            aria-pressed={!!memo.isFavorite}
-                            onClick={() => onToggleFavorite(memo.id)}
+                            aria-pressed={!!memo.isPinned}
+                            onClick={() => onTogglePinned(memo.id)}
                           >
                             <StarIcon
                               className={
-                                memo.isFavorite ? "text-point" : "text-gray01"
+                                memo.isPinned ? "text-point" : "text-gray01"
                               }
                             />
                           </button>
@@ -113,7 +113,7 @@ const MemoLists = ({
                         </p>
                       </div>
                       <div className="flex shrink-0 items-center justify-between gap-3 text-body-small">
-                        <span>{memo.tag}</span>
+                        <span>{TAG_LABELS[memo.category]}</span>
                         <time dateTime={memo.date}>
                           {memo.date.replaceAll("-", ".")}
                         </time>

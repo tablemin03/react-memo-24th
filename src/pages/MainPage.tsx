@@ -13,7 +13,7 @@ export default function MainPage() {
   const [memos, setMemos] = useState<Memo[]>(mockMemos);
   const [keyword, setKeyword] = useState("");
   const [debouncedKeyword, setDebouncedKeyword] = useState("");
-  const [selectedTag, setSelectedTag] = useState<MemoTag | "">("");
+  const [selectedCategory, setSelectedCategory] = useState<MemoTag | "">("");
   const [selectedMemoId, setSelectedMemoId] = useState<Memo["id"] | null>(null);
   const selectedMemo = memos.find((memo) => memo.id === selectedMemoId);
 
@@ -27,22 +27,22 @@ export default function MainPage() {
 
   const query = debouncedKeyword.trim().toLowerCase();
 
-  const toggleFavorite = (id: Memo["id"]) => {
+  const togglePinned = (id: Memo["id"]) => {
     setMemos((previousMemos) =>
       previousMemos.map((memo) =>
-        memo.id === id ? { ...memo, isFavorite: !memo.isFavorite } : memo,
+        memo.id === id ? { ...memo, isPinned: !memo.isPinned } : memo,
       ),
     );
   };
 
   const filteredMemos = memos.filter((memo) => {
-    const matchesTag = selectedTag === "" || memo.tag === selectedTag;
+    const matchesCategory = selectedCategory === "" || memo.category === selectedCategory;
 
     const matchesKeyword =
       memo.title.toLowerCase().includes(query) ||
       memo.content.toLowerCase().includes(query);
 
-    return matchesTag && matchesKeyword;
+    return matchesCategory && matchesKeyword;
   });
 
   return (
@@ -58,15 +58,15 @@ export default function MainPage() {
               <Select
                 aria-label="검색 태그"
                 options={[{ value: "", label: "태그 선택" }, ...TAG_OPTIONS]}
-                value={selectedTag}
+                value={selectedCategory}
                 onValueChange={(value) => {
                   if (
                     value === "" ||
-                    value === "Work" ||
-                    value === "Daily" ||
-                    value === "Others"
+                    value === "WORK" ||
+                    value === "DAILY" ||
+                    value === "OTHERS"
                   ) {
-                    setSelectedTag(value);
+                    setSelectedCategory(value);
                   }
                 }}
               />
@@ -103,7 +103,7 @@ export default function MainPage() {
       <MemoLists
         memos={filteredMemos}
         totalCount={memos.length}
-        onToggleFavorite={toggleFavorite}
+        onTogglePinned={togglePinned}
         onSelectMemo={setSelectedMemoId}
       />
       {selectedMemo && (

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import type { MouseEvent } from "react";
 import type { Memo } from "../types/memos";
-import { MEMO_COLORS, TAG_COLORS } from "../constants/tags";
+import { MEMO_COLORS, TAG_COLORS, TAG_LABELS } from "../constants/tags";
 import ExitIcon from "./icons/ExitIcon";
 import EditIcon from "./icons/EditIcon";
 import TrashIcon from "./icons/TrashIcon";
@@ -44,7 +44,7 @@ export default function MemoModal({ memo, onClose }: MemoModalProps) {
       ref={dialogRef}
       id="modal-memo"
       aria-labelledby="modal-memo-heading"
-      className={`fixed inset-0 m-auto max-h-[85dvh] w-139 h-139 py-10 px-11 overflow-y-hidden rounded-[24px] text-white00 shadow-xl backdrop:bg-blue07/50 ${MEMO_COLORS[memo.tag]}`}
+      className={`fixed inset-0 m-auto max-h-[85dvh] w-139 h-139 py-10 px-11 overflow-y-hidden rounded-[24px] text-white00 shadow-xl backdrop:bg-blue07/50 ${MEMO_COLORS[memo.category]}`}
       onCancel={(event) => {
         event.preventDefault();
         onClose();
@@ -81,13 +81,13 @@ export default function MemoModal({ memo, onClose }: MemoModalProps) {
           className="flex flex-wrap items-center justify-start gap-6"
         >
           <div
-            className={`inline-flex items-center gap-2 rounded-[36px] bg-blue01 px-4 py-1 text-action-medium ${TAG_COLORS[memo.tag]}`}
+            className={`inline-flex items-center gap-2 rounded-[36px] bg-blue01 px-4 py-1 text-action-medium ${TAG_COLORS[memo.category]}`}
           >
             <span
               className="size-5 rounded-full bg-current"
               aria-hidden="true"
             />
-            <span>{memo.tag}</span>
+            <span>{TAG_LABELS[memo.category]}</span>
           </div>
           <time
             id="modal-memo-date"

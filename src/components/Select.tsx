@@ -26,7 +26,7 @@ export default function Select({
   ...props
 }: SelectProps) {
   const isSelected =
-    value === "Daily" || value === "Others" || value === "Work";
+    value === "DAILY" || value === "OTHERS" || value === "WORK";
   const selectedColor = isSelected
     ? TAG_COLORS[value as MemoTag]
     : "text-blue07";
